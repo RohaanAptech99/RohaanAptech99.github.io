@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PosterCraft — Luxury Wall Art Collections</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome 6 for Luxury Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Playfair Display & Plus Jakarta Sans -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        serif: ['Playfair Display', 'serif'],
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        gold: {
+                            DEFAULT: '#d4af37',
+                            light: '#f3e5ab',
+                            dark: '#aa8c2c',
+                            glow: 'rgba(212, 175, 55, 0.25)'
+                        },
+                        darkBg: '#0a0a0c',
+                        cardBg: '#131316',
+                        cardHover: '#1a1a20'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #0a0a0c;
+            color: #f3f4f6;
+            overflow-x: hidden;
+        }
+        h1, h2, h3, h4, .font-serif {
+            font-family: 'Playfair Display', serif;
+        }
+
+        /* 3D Card Flip Animation */
+        .perspective-1000 {
+            perspective: 1000px;
+        }
+        .transform-style-3d {
+            transform-style: preserve-3d;
+            transition: transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .group:hover .transform-style-3d,
+        .group:focus-within .transform-style-3d {
+            transform: rotateY(180deg);
+        }
+        .backface-hidden {
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+        }
+        .rotate-y-180 {
+            transform: rotateY(180deg);
+        }
+
+        /* Smooth Sliding Cart Drawer with Custom Timing */
+        .drawer-slide {
+            transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .backdrop-fade {
+            transition: opacity 0.4s ease, visibility 0.4s ease;
+        }
+
+        /* Custom Golden Scrollbar (Entire Page & Sliders) */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0a0a0c;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #aa8c2c, #d4af37, #f3e5ab);
+            border-radius: 9999px;
+            border: 2px solid #0a0a0c;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #d4af37;
+        }
+
+        /* Glassmorphism Styling */
+        .glass-nav {
+            background: rgba(10, 10, 12, 0.82);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.15);
+        }
+        .glass-card {
+            background: rgba(19, 19, 22, 0.9);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(212, 175, 55, 0.18);
+        }
+        .gold-glow-lg {
+            box-shadow: 0 0 30px rgba(212, 175, 55, 0.2);
+        }
+
+        /* Floating Animation */
+        @keyframes subtleFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
+        }
+        .floating-icon {
+            animation: subtleFloat 3.5s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body class="bg-darkBg text-gray-100 antialiased selection:bg-gold selection:text-black">
+
+    <!-- Navigation Header -->
+    <header class="sticky top-0 z-40 glass-nav transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <a href="#" class="flex items-center space-x-3 group">
+                <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-gold-dark via-gold to-gold-light flex items-center justify-center text-black font-serif font-bold text-xl shadow-md group-hover:scale-105 transition-transform">
+                    P
+                </div>
+                <div>
+                    <span class="text-2xl sm:text-3xl font-serif font-bold tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-gold-light via-gold to-gold-dark">PosterCraft</span>
+                    <span class="block text-[10px] tracking-[0.25em] text-gold/70 uppercase">Luxury Wall Art</span>
+                </div>
+            </a>
+
+            <!-- Navigation Links -->
+            <nav class="hidden md:flex items-center space-x-8 text-sm font-medium tracking-wide">
+                <a href="#small-section" class="hover:text-gold transition-colors py-1 border-b-2 border-transparent hover:border-gold">Small Posters</a>
+                <a href="#large-section" class="hover:text-gold transition-colors py-1 border-b-2 border-transparent hover:border-gold">Large Posters</a>
+                <a href="#separate-section" class="hover:text-gold transition-colors py-1 border-b-2 border-transparent hover:border-gold">Separate Edition</a>
+                <a href="#about-section" class="hover:text-gold transition-colors py-1 border-b-2 border-transparent hover:border-gold">Craftsmanship</a>
+            </nav>
+
+            <!-- Cart Trigger Button -->
+            <div class="flex items-center space-x-3">
+                <button onclick="toggleCartDrawer(true)" class="relative p-3 rounded-full bg-cardBg border border-gold/30 hover:border-gold text-gold hover:bg-gold hover:text-black transition-all duration-300 flex items-center justify-center shadow-lg active:scale-95">
+                    <i class="fa-solid fa-bag-shopping text-lg"></i>
+                    <span id="nav-cart-badge" class="absolute -top-1 -right-1 bg-gold text-black text-[11px] font-bold w-5 h-5 rounded-full flex items-center justify-center border border-black hidden">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Store View -->
+    <div id="store-view" class="transition-opacity duration-300">
+        <!-- Hero Banner -->
+        <section class="relative py-20 sm:py-28 overflow-hidden bg-gradient-to-b from-darkBg via-[#121116] to-darkBg">
+            <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#d4af37_1px,transparent_1px)] [background-size:28px_28px]"></div>
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+                <span class="inline-block py-1.5 px-4 rounded-full bg-gold/10 border border-gold/30 text-gold text-xs sm:text-sm tracking-widest uppercase mb-6 font-semibold shadow-sm">
+                    ✨ Exquisite Wall Aesthetics
+                </span>
+                <h1 class="text-4xl sm:text-6xl lg:text-7xl font-serif font-bold tracking-tight mb-6 max-w-4xl mx-auto leading-tight">
+                    Transform Your Space Into A <span class="text-transparent bg-clip-text bg-gradient-to-r from-gold-light via-gold to-gold-dark">Masterpiece</span>
+                </h1>
+                <p class="text-gray-400 text-base sm:text-lg max-w-2xl mx-auto mb-10 font-light leading-relaxed">
+                    Handcrafted archival-grade wall posters designed for modern luxury interiors. Explore our exclusive editions across Small, Large, and Separate collections.
+                </p>
+                <div class="flex flex-wrap justify-center gap-4">
+                    <a href="#small-section" class="px-8 py-4 bg-gradient-to-r from-gold-dark via-gold to-gold-light text-black font-bold rounded-full shadow-lg shadow-gold/20 hover:scale-105 active:scale-95 transition-all duration-300">
+                        Explore Collections
+                    </a>
+                    <a href="#separate-section" class="px-8 py-4 bg-cardBg border border-gold/40 text-gold hover:bg-gold/10 rounded-full font-semibold transition-all duration-300">
+                        Separate Edition
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 1: Small Posters (60 cards) -->
+        <section id="small-section" class="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 border-b border-gold/20 pb-6 gap-4">
+                <div>
+                    <span class="text-gold text-xs tracking-widest uppercase font-semibold">Collection I</span>
+                    <h2 class="text-3xl sm:text-4xl font-serif font-bold mt-1 text-gold-light">Beautiful small posters for your wall</h2>
+                </div>
+                <p class="text-gray-400 text-sm">Compact Art • 60 Editions Available</p>
+            </div>
+            <div id="small-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+                <!-- Injected via JS -->
+            </div>
+        </section>
+
+        <!-- SECTION 2: Large Posters (64 cards) -->
+        <section id="large-section" class="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 border-b border-gold/20 pb-6 gap-4">
+                <div>
+                    <span class="text-gold text-xs tracking-widest uppercase font-semibold">Collection II</span>
+                    <h2 class="text-3xl sm:text-4xl font-serif font-bold mt-1 text-gold-light">Stunning Large Posters To Transform Your Space</h2>
+                </div>
+                <p class="text-gray-400 text-sm">Statement Centerpieces • 64 Editions Available</p>
+            </div>
+            <div id="large-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+                <!-- Injected via JS -->
+            </div>
+        </section>
+
+        <!-- SECTION 3: Separate Edition (42 cards) -->
+        <section id="separate-section" class="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 border-b border-gold/20 pb-6 gap-4">
+                <div>
+                    <span class="text-gold text-xs tracking-widest uppercase font-semibold">Collection III</span>
+                    <h2 class="text-3xl sm:text-4xl font-serif font-bold mt-1 text-gold-light">Exclusive Separate Edition Posters</h2>
+                </div>
+                <p class="text-gray-400 text-sm">Custom Masterpieces • 42 Editions Available</p>
+            </div>
+            <div id="separate-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+                <!-- Injected via JS -->
+            </div>
+        </section>
+
+        <!-- Heritage / Craftsmanship Section -->
+        <section id="about-section" class="py-20 bg-[#0e0e11] border-t border-b border-gold/20 my-16">
+            <div class="max-w-5xl mx-auto px-4 text-center">
+                <span class="text-gold text-xs uppercase tracking-widest font-bold">The PosterCraft Standard</span>
+                <h2 class="text-3xl sm:text-5xl font-serif font-bold my-4">Designed for the Connoisseur</h2>
+                <p class="text-gray-400 text-base sm:text-lg leading-relaxed mb-12 max-w-3xl mx-auto font-light">
+                    Every poster in our gallery is printed on heavyweight archival museum matte paper using anti-fade pigment inks. We offer unmatched clarity and rich color fidelity designed to elevate any luxury space.
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
+                    <div class="p-6 rounded-2xl bg-cardBg border border-gold/20 hover:border-gold/50 transition-colors">
+                        <div class="w-12 h-12 rounded-xl bg-gold/10 flex items-center justify-center text-gold mb-4 text-xl"><i class="fa-solid fa-feather"></i></div>
+                        <h3 class="font-serif font-bold text-lg text-gold mb-2">Archival Matte Paper</h3>
+                        <p class="text-sm text-gray-400 leading-relaxed">Heavyweight 300gsm textured finish that eliminates glare while displaying vibrant detail.</p>
+                    </div>
+                    <div class="p-6 rounded-2xl bg-cardBg border border-gold/20 hover:border-gold/50 transition-colors">
+                        <div class="w-12 h-12 rounded-xl bg-gold/10 flex items-center justify-center text-gold mb-4 text-xl"><i class="fa-solid fa-box-archive"></i></div>
+                        <h3 class="font-serif font-bold text-lg text-gold mb-2">Protective Tube Packing</h3>
+                        <p class="text-sm text-gray-400 leading-relaxed">Shipped in reinforced moisture-sealed rigid art tubes ensuring flawless delivery.</p>
+                    </div>
+                    <div class="p-6 rounded-2xl bg-cardBg border border-gold/20 hover:border-gold/50 transition-colors">
+                        <div class="w-12 h-12 rounded-xl bg-gold/10 flex items-center justify-center text-gold mb-4 text-xl"><i class="fa-solid fa-gem"></i></div>
+                        <h3 class="font-serif font-bold text-lg text-gold mb-2">Limited Fine Art Runs</h3>
+                        <p class="text-sm text-gray-400 leading-relaxed">Curated luxury releases meticulously tailored for minimalist and modern wall decor.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="bg-black py-12 border-t border-gold/20 text-gray-400 text-sm">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
+                <div class="flex items-center space-x-3">
+                    <div class="w-8 h-8 rounded-full bg-gold flex items-center justify-center text-black font-bold">P</div>
+                    <span class="text-xl font-serif font-bold text-gold-light">PosterCraft</span>
+                </div>
+                <p class="text-center md:text-left text-xs text-gray-500">&copy; 2026 PosterCraft Luxury Wall Art. All rights reserved.</p>
+                <div class="flex space-x-6 text-gold text-lg">
+                    <a href="https://instagram.com/ziv.786x" target="_blank" class="hover:text-white transition-colors"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="https://wa.me/923333613291" target="_blank" class="hover:text-white transition-colors"><i class="fa-brands fa-whatsapp"></i></a>
+                    <a href="#" class="hover:text-white transition-colors"><i class="fa-solid fa-envelope"></i></a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- DEDICATED CHECKOUT PAGE VIEW (Hidden by default, smooth view switch) -->
+    <div id="checkout-view" class="min-h-screen py-12 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto hidden transition-all duration-300">
+        <!-- Top Back Navigation -->
+        <button onclick="closeCheckoutView()" class="inline-flex items-center space-x-2 text-gold hover:text-white transition-colors mb-8 group bg-cardBg px-5 py-2.5 rounded-full border border-gold/30">
+            <i class="fa-solid fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
+            <span class="text-sm font-semibold uppercase tracking-wider">Back to Gallery</span>
+        </button>
+
+        <div class="glass-card rounded-3xl p-6 sm:p-10 border border-gold/30 gold-glow-lg">
+            <div class="text-center max-w-xl mx-auto mb-10">
+                <div class="w-16 h-16 rounded-full bg-gold/10 text-gold flex items-center justify-center mx-auto mb-4 text-2xl floating-icon">
+                    <i class="fa-solid fa-shield-halved"></i>
+                </div>
+                <span class="text-xs font-bold text-gold uppercase tracking-widest">Direct Fine Art Order</span>
+                <h2 class="text-3xl sm:text-4xl font-serif font-bold text-white mt-1">Complete Your Selection</h2>
+                <p class="text-gray-400 text-sm mt-3 leading-relaxed">
+                    Connect directly with our art consultants via WhatsApp or Instagram to confirm your order details and custom delivery preferences.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+                <!-- WhatsApp Payment & Ordering Card -->
+                <div class="p-6 rounded-2xl bg-black/60 border border-green-500/30 hover:border-green-500 transition-all group flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center space-x-4 mb-4">
+                            <div class="w-12 h-12 rounded-xl bg-green-500/10 text-green-400 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
+                                <i class="fa-brands fa-whatsapp"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-lg text-white">Order via WhatsApp</h3>
+                                <span class="text-xs text-green-400">Instant Pre-filled Cart Summary</span>
+                            </div>
+                        </div>
+                        <p class="text-xs text-gray-400 leading-relaxed mb-4">
+                            Click below to open WhatsApp with your chosen posters and total pre-calculated automatically.
+                        </p>
+                        <div class="bg-cardBg p-3 rounded-xl border border-gold/10 flex items-center justify-between mb-4">
+                            <div class="truncate mr-2">
+                                <div class="text-[10px] text-gray-500 uppercase">WhatsApp Number</div>
+                                <div id="whatsapp-num-display" class="font-mono text-gold font-bold text-sm truncate">+92 333 3613291</div>
+                            </div>
+                            <button onclick="copyToClipboard('+923333613291')" class="px-3 py-1.5 bg-gold/10 text-gold hover:bg-gold hover:text-black transition-colors rounded-lg text-xs font-semibold flex-shrink-0">
+                                Copy
+                            </button>
+                        </div>
+                    </div>
+                    <button onclick="sendWhatsAppOrder()" class="w-full py-3.5 bg-green-600 hover:bg-green-500 text-white font-bold rounded-xl shadow-lg transition-all flex items-center justify-center space-x-2 text-sm">
+                        <i class="fa-brands fa-whatsapp text-lg"></i>
+                        <span>Send Order on WhatsApp</span>
+                    </button>
+                </div>
+
+                <!-- Instagram Payment & Inquiry Card -->
+                <div class="p-6 rounded-2xl bg-black/60 border border-pink-500/30 hover:border-pink-500 transition-all group flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center space-x-4 mb-4">
+                            <div class="w-12 h-12 rounded-xl bg-pink-500/10 text-pink-400 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
+                                <i class="fa-brands fa-instagram"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-lg text-white">Contact via Instagram</h3>
+                                <span class="text-xs text-pink-400">Direct DM Inquiry</span>
+                            </div>
+                        </div>
+                        <p class="text-xs text-gray-400 leading-relaxed mb-4">
+                            Send us a direct message on Instagram to share your order preference or ask for custom framing advice.
+                        </p>
+                        <div class="bg-cardBg p-3 rounded-xl border border-gold/10 flex items-center justify-between mb-4">
+                            <div class="truncate mr-2">
+                                <div class="text-[10px] text-gray-500 uppercase">Instagram Handle</div>
+                                <div id="insta-handle-display" class="font-mono text-gold font-bold text-sm truncate">@ziv.786x</div>
+                            </div>
+                            <button onclick="copyToClipboard('@ziv.786x')" class="px-3 py-1.5 bg-gold/10 text-gold hover:bg-gold hover:text-black transition-colors rounded-lg text-xs font-semibold flex-shrink-0">
+                                Copy
+                            </button>
+                        </div>
+                    </div>
+                    <a href="https://instagram.com/ziv.786x" target="_blank" class="w-full py-3.5 bg-gradient-to-r from-purple-600 via-pink-600 to-rose-500 hover:opacity-90 text-white font-bold rounded-xl shadow-lg transition-all flex items-center justify-center space-x-2 text-sm">
+                        <i class="fa-brands fa-instagram text-lg"></i>
+                        <span>Open Instagram DM</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Order Items Summary Table -->
+            <div class="p-6 rounded-2xl bg-black/40 border border-gold/20">
+                <h4 class="font-serif font-bold text-lg text-gold mb-4">Selected Posters Summary</h4>
+                <div id="checkout-items-list" class="space-y-3 max-h-60 overflow-y-auto pr-2 divide-y divide-gold/10">
+                    <!-- Dynamic Summary Items Injected Here -->
+                </div>
+                <div class="mt-4 pt-4 border-t border-gold/20 flex items-center justify-between font-serif text-lg font-bold">
+                    <span class="text-gray-300">Total Investment:</span>
+                    <span id="checkout-total-price" class="text-gold text-xl">Rs. 0</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Cart Button (Bottom-Right) -->
+    <div class="fixed bottom-6 right-6 z-50">
+        <button onclick="toggleCartDrawer(true)" class="group relative bg-gradient-to-r from-gold-dark via-gold to-gold-light text-black p-4 rounded-full shadow-2xl hover:scale-110 active:scale-95 transition-all duration-300 flex items-center justify-center w-16 h-16 gold-glow-lg">
+            <i class="fa-solid fa-bag-shopping text-2xl group-hover:rotate-12 transition-transform"></i>
+            <span id="floating-cart-count" class="absolute -top-2 -right-2 bg-black text-gold font-bold text-xs w-7 h-7 rounded-full flex items-center justify-center border-2 border-gold shadow-md hidden">0</span>
+        </button>
+    </div>
+
+    <!-- Smooth Side Cart Drawer & Backdrop -->
+    <div id="cart-drawer-backdrop" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden opacity-0 backdrop-fade" onclick="toggleCartDrawer(false)"></div>
+    
+    <div id="cart-drawer" class="fixed top-0 right-0 h-full w-full sm:w-[420px] bg-cardBg border-l border-gold/30 z-50 transform translate-x-full drawer-slide flex flex-col shadow-2xl">
+        <!-- Drawer Header -->
+        <div class="p-6 border-b border-gold/20 flex items-center justify-between bg-black/50">
+            <div class="flex items-center space-x-3">
+                <i class="fa-solid fa-bag-shopping text-gold text-xl"></i>
+                <h3 class="font-serif font-bold text-xl text-gold-light">Your Luxury Cart</h3>
+            </div>
+            <button onclick="toggleCartDrawer(false)" class="p-2 rounded-full hover:bg-gold/20 text-gray-400 hover:text-gold transition-colors">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+        </div>
+
+        <!-- Drawer Body / Item List -->
+        <div id="cart-items-container" class="flex-1 overflow-y-auto p-6 space-y-4 divide-y divide-gold/10">
+            <!-- Dynamically Injected Cart Items -->
+        </div>
+
+        <!-- Drawer Footer -->
+        <div id="cart-footer" class="p-6 border-t border-gold/20 bg-black/70 hidden">
+            <div class="space-y-2 mb-4">
+                <div class="flex justify-between text-sm text-gray-400">
+                    <span>Subtotal</span>
+                    <span id="cart-subtotal" class="font-semibold text-gold">Rs. 0</span>
+                </div>
+                <div class="flex justify-between text-sm text-gray-400">
+                    <span>Shipping Container</span>
+                    <span class="text-gold">Complimentary Tube</span>
+                </div>
+                <div class="flex justify-between text-lg font-serif font-bold text-white pt-2 border-t border-gold/20">
+                    <span>Total Amount</span>
+                    <span id="cart-total" class="text-gold">Rs. 0</span>
+                </div>
+            </div>
+            <button onclick="openCheckoutView()" class="w-full py-4 bg-gradient-to-r from-gold-dark via-gold to-gold-light text-black font-bold rounded-xl shadow-lg hover:opacity-95 active:scale-[0.98] transition-all text-center block">
+                Proceed to Checkout
+            </button>
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="fixed bottom-24 left-1/2 transform -translate-x-1/2 z-50 bg-cardBg border border-gold text-gold px-6 py-3 rounded-full shadow-2xl transition-all duration-300 opacity-0 pointer-events-none flex items-center space-x-3">
+        <i class="fa-solid fa-circle-check text-gold"></i>
+        <span id="toast-msg" class="text-sm font-medium">Poster added to cart</span>
+    </div>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        const adjectives = ["Ethereal", "Minimalist", "Vibrant", "Celestial", "Abstract", "Golden", "Serene", "Nocturnal", "Monochrome", "Vintage", "Harmonic", "Sublime", "Timeless", "Architectural", "Botanical"];
+        const nouns = ["Horizon", "Silence", "Echo", "Geometry", "Solitude", "Spectrum", "Vortex", "Symphony", "Gradient", "Perspective", "Chroma", "Monolith", "Canvas", "Reflections", "Aura"];
+
+        // Small Posters Generator (60 items, img/img1.jpg to img/img60.jpg, Rs. 35)
+        function generateSmallPosters() {
+            let list = [];
+            for (let i = 1; i <= 60; i++) {
+                list.push({
+                    id: `small-${i}`,
+                    title: `Beautiful small poster`,
+                    price: 35,
+                    image: `img/img${i}.jpg`,
+                    category: 'small',
+                    description: `Printed on archival-grade 300gsm matte paper with anti-fade inks. Fine art reproduction crafted to elevate luxury wall decor.`
+                });
+            }
+            return list;
+        }
+
+        // Large Posters Generator (64 items, lar/lar1.jpg to lar/lar64.jpg, Rs. 150)
+        function generateLargePosters() {
+            let list = [];
+            for (let i = 1; i <= 64; i++) {
+                let adj = adjectives[(i * 7) % adjectives.length];
+                let noun = nouns[(i * 13) % nouns.length];
+                let title = `${adj} ${noun} Edition ${i}`;
+                let img = `lar/lar${i}.jpg`;
+                list.push({
+                    id: `large-${i}`,
+                    title: title,
+                    price: 150,
+                    image: img,
+                    category: 'large',
+                    description: `Printed on archival-grade 300gsm matte paper with anti-fade inks. Fine art reproduction crafted to elevate luxury wall decor.`
+                });
+            }
+            return list;
+        }
+
+        // Separate Posters Generator (42 items, sep/sep1.jpg to sep/sep42.jpg, Rs. 499)
+        function generateSeparatePosters() {
+            let list = [];
+            for (let i = 1; i <= 42; i++) {
+                let adj = adjectives[(i * 5) % adjectives.length];
+                let noun = nouns[(i * 11) % nouns.length];
+                let title = `${adj} ${noun} Edition ${i}`;
+                let img = `sep/sep${i}.jpg`;
+                list.push({
+                    id: `separate-${i}`,
+                    title: title,
+                    price: 499,
+                    image: img,
+                    category: 'separate',
+                    description: `Printed on archival-grade 300gsm matte paper with anti-fade inks. Fine art reproduction crafted to elevate luxury wall decor.`
+                });
+            }
+            return list;
+        }
+
+        // Data collections: 60 Small (Rs. 35), 64 Large (Rs. 150), 42 Separate (Rs. 499)
+        const smallPosters = generateSmallPosters();
+        const largePosters = generateLargePosters();
+        const separatePosters = generateSeparatePosters();
+
+        // Cart State
+        let cart = [];
+
+        function renderGrid(posters, containerId) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
+            posters.forEach(p => {
+                const cardHTML = `
+                    <div class="group h-[380px] perspective-1000 cursor-pointer">
+                        <div class="relative w-full h-full transform-style-3d shadow-xl rounded-2xl">
+                            <!-- FRONT CARD -->
+                            <div class="absolute inset-0 backface-hidden bg-cardBg border border-gold/20 rounded-2xl overflow-hidden flex flex-col transition-all duration-300 group-hover:border-gold">
+                                <div class="relative h-60 w-full overflow-hidden bg-black/40">
+                                    <img src="${p.image}" alt="${p.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" onerror="this.src='https://placehold.co/600x800/141414/d4af37?text=PosterCraft'">
+                                    <span class="absolute top-3 left-3 bg-black/80 backdrop-blur-md text-gold text-[10px] uppercase font-bold tracking-widest px-2.5 py-1 rounded-full border border-gold/30">
+                                        ${p.category}
+                                    </span>
+                                </div>
+                                <div class="p-4 flex flex-col justify-between flex-1">
+                                    <h3 class="font-serif font-bold text-base text-gray-100 truncate">${p.title}</h3>
+                                    <div class="flex items-center justify-between mt-2">
+                                        <span class="text-xs text-gray-400 font-medium">Fine Art Print</span>
+                                        <span class="text-gold font-bold text-sm">Rs. ${p.price.toLocaleString()}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- BACK CARD (FLIPPED) -->
+                            <div class="absolute inset-0 backface-hidden rotate-y-180 bg-cardHover border border-gold/40 rounded-2xl p-6 flex flex-col justify-between shadow-2xl">
+                                <div>
+                                    <div class="flex items-center justify-between mb-3">
+                                        <span class="text-gold text-xs uppercase tracking-widest font-bold">Art Specifications</span>
+                                        <span class="text-[10px] bg-gold/10 text-gold px-2 py-0.5 rounded border border-gold/20">In Stock</span>
+                                    </div>
+                                    <h4 class="font-serif font-bold text-lg text-white mb-2">${p.title}</h4>
+                                    <p class="text-gray-300 text-xs leading-relaxed mb-4 line-clamp-4">${p.description}</p>
+                                </div>
+                                <div>
+                                    <div class="flex items-center justify-between mb-3">
+                                        <span class="text-gray-400 text-xs">Price:</span>
+                                        <span class="text-gold font-bold text-lg">Rs. ${p.price.toLocaleString()}</span>
+                                    </div>
+                                    <button onclick="event.stopPropagation(); addToCart('${p.id}', '${p.category}')" class="w-full py-3 bg-gradient-to-r from-gold-dark via-gold to-gold-light text-black font-bold rounded-xl shadow-lg hover:opacity-95 active:scale-95 transition-all text-sm flex items-center justify-center space-x-2">
+                                        <i class="fa-solid fa-cart-plus"></i>
+                                        <span>Add to Cart</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.insertAdjacentHTML('beforeend', cardHTML);
+            });
+        }
+
+        function toggleCartDrawer(open) {
+            const drawer = document.getElementById('cart-drawer');
+            const backdrop = document.getElementById('cart-drawer-backdrop');
+
+            if (open) {
+                backdrop.classList.remove('hidden');
+                setTimeout(() => {
+                    backdrop.classList.remove('opacity-0');
+                    drawer.classList.remove('translate-x-full');
+                }, 10);
+            } else {
+                drawer.classList.add('translate-x-full');
+                backdrop.classList.add('opacity-0');
+                setTimeout(() => {
+                    backdrop.classList.add('hidden');
+                }, 400);
+            }
+        }
+
+        function findPoster(id, category) {
+            if (category === 'small') return smallPosters.find(p => p.id === id);
+            if (category === 'large') return largePosters.find(p => p.id === id);
+            if (category === 'separate') return separatePosters.find(p => p.id === id);
+            return null;
+        }
+
+        function addToCart(id, category) {
+            const poster = findPoster(id, category);
+            if (!poster) return;
+
+            const existing = cart.find(item => item.id === id);
+            if (existing) {
+                existing.quantity += 1;
+            } else {
+                cart.push({ ...poster, quantity: 1 });
+            }
+
+            updateCartUI();
+            showToast(`Added "${poster.title}" to cart`);
+        }
+
+        function removeFromCart(id) {
+            cart = cart.filter(item => item.id !== id);
+            updateCartUI();
+        }
+
+        function updateQuantity(id, change) {
+            const item = cart.find(i => i.id === id);
+            if (item) {
+                item.quantity += change;
+                if (item.quantity <= 0) {
+                    removeFromCart(id);
+                } else {
+                    updateCartUI();
+                }
+            }
+        }
+
+        function updateCartUI() {
+            const navBadge = document.getElementById('nav-cart-badge');
+            const floatingBadge = document.getElementById('floating-cart-count');
+            const container = document.getElementById('cart-items-container');
+            const footer = document.getElementById('cart-footer');
+
+            const totalCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+
+            if (totalCount > 0) {
+                navBadge.innerText = totalCount;
+                navBadge.classList.remove('hidden');
+                floatingBadge.innerText = totalCount;
+                floatingBadge.classList.remove('hidden');
+                footer.classList.remove('hidden');
+            } else {
+                navBadge.classList.add('hidden');
+                floatingBadge.classList.add('hidden');
+                footer.classList.add('hidden');
+            }
+
+            if (cart.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-20">
+                        <div class="w-16 h-16 rounded-full bg-gold/10 text-gold flex items-center justify-center mx-auto mb-4 text-2xl"><i class="fa-solid fa-bag-shopping"></i></div>
+                        <h4 class="font-serif font-bold text-lg text-gold-light mb-1">Your cart is empty</h4>
+                        <p class="text-xs text-gray-400">Explore our collections and add luxury art to your space.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = '';
+            let subtotal = 0;
+
+            cart.forEach(item => {
+                subtotal += item.price * item.quantity;
+                const itemHTML = `
+                    <div class="flex items-center space-x-4 py-4">
+                        <img src="${item.image}" alt="${item.title}" class="w-16 h-20 object-cover rounded-xl border border-gold/20 flex-shrink-0" onerror="this.src='https://placehold.co/100x120/141414/d4af37?text=Poster'">
+                        <div class="flex-1 min-w-0">
+                            <h4 class="font-serif font-bold text-sm text-white truncate">${item.title}</h4>
+                            <p class="text-xs font-bold text-gold mt-1">Rs. ${item.price.toLocaleString()} x ${item.quantity}</p>
+                        </div>
+                        <div class="flex flex-col items-end space-y-2">
+                            <button onclick="removeFromCart('${item.id}')" class="text-gray-500 hover:text-red-400 text-xs transition-colors"><i class="fa-solid fa-trash"></i></button>
+                            <div class="flex items-center space-x-2 bg-black/50 rounded-lg px-2 py-1 border border-gold/20">
+                                <button onclick="updateQuantity('${item.id}', -1)" class="text-gold text-xs px-1 hover:text-white">-</button>
+                                <span class="text-xs font-bold text-white">${item.quantity}</span>
+                                <button onclick="updateQuantity('${item.id}', 1)" class="text-gold text-xs px-1 hover:text-white">+</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.insertAdjacentHTML('beforeend', itemHTML);
+            });
+
+            document.getElementById('cart-subtotal').innerText = `Rs. ${subtotal.toLocaleString()}`;
+            document.getElementById('cart-total').innerText = `Rs. ${subtotal.toLocaleString()}`;
+        }
+
+        function openCheckoutView() {
+            if (cart.length === 0) return;
+
+            toggleCartDrawer(false);
+
+            document.getElementById('store-view').classList.add('hidden');
+            const checkoutView = document.getElementById('checkout-view');
+            checkoutView.classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            const summaryList = document.getElementById('checkout-items-list');
+            summaryList.innerHTML = '';
+            let grandTotal = 0;
+
+            cart.forEach(item => {
+                const totalItemPrice = item.price * item.quantity;
+                grandTotal += totalItemPrice;
+                summaryList.innerHTML += `
+                    <div class="flex items-center justify-between py-2 text-xs">
+                        <div class="flex items-center space-x-3">
+                            <span class="text-gold font-bold">${item.quantity}x</span>
+                            <span class="text-white font-medium">${item.title}</span>
+                        </div>
+                        <span class="text-gray-300 font-semibold">Rs. ${totalItemPrice.toLocaleString()}</span>
+                    </div>
+                `;
+            });
+
+            document.getElementById('checkout-total-price').innerText = `Rs. ${grandTotal.toLocaleString()}`;
+        }
+
+        function closeCheckoutView() {
+            document.getElementById('checkout-view').classList.add('hidden');
+            document.getElementById('store-view').classList.remove('hidden');
+        }
+
+        function sendWhatsAppOrder() {
+            if (cart.length === 0) return;
+
+            let orderText = `*PosterCraft Order Details*%0A%0A`;
+            let total = 0;
+
+            cart.forEach((item, index) => {
+                const itemTotal = item.price * item.quantity;
+                total += itemTotal;
+                orderText += `${index + 1}. *${item.title}*%0A   Quantity: ${item.quantity} | Price: Rs. ${itemTotal.toLocaleString()}%0A`;
+            });
+
+            orderText += `%0A*Total Amount:* Rs. ${total.toLocaleString()}%0A%0AHi PosterCraft team, I would like to confirm my poster order!`;
+
+            const whatsappUrl = `https://wa.me/923333613291?text=${orderText}`;
+            window.open(whatsappUrl, '_blank');
+        }
+
+        function copyToClipboard(text) {
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+            showToast('Copied to clipboard!');
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            const msgEl = document.getElementById('toast-msg');
+            msgEl.innerText = msg;
+            toast.classList.remove('opacity-0', 'pointer-events-none');
+            toast.classList.add('opacity-100');
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'pointer-events-none');
+                toast.classList.remove('opacity-100');
+            }, 2800);
+        }
+
+        // Initialize App on Window Load
+        window.onload = function() {
+            renderGrid(smallPosters, 'small-grid');
+            renderGrid(largePosters, 'large-grid');
+            renderGrid(separatePosters, 'separate-grid');
+            updateCartUI();
+        };
+    </script>
+</body>
+</html>
